@@ -1,0 +1,41 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Unit tests A2",
+      "type": "node",
+      "request": "launch",
+      "env": {
+        "NODE_OPTIONS": "--experimental-vm-modules"
+      },
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/.bin/jest",
+        "--runInBand",
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229
+    },
+    {
+      "name": "Unit tests tentando",
+      "type": "node",
+      "request": "launch",
+      "env": {
+        "NODE_OPTIONS": "--experimental-vm-modules"
+      },
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["node_modules/.bin/jest"],
+      "args": [
+        "--runInBand",
+        
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229
+    }
+  ]
+}

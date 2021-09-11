@@ -1,7 +1,10 @@
-import FileHelper from "./fileHelper.js"
-import { logger } from "./logger.js"
+import { pipeline } from "stream/promises";
 import { dirname, resolve } from "path";
-import { fileURLToPath } from "url";
+import { fileURLToPath, parse } from "url";
+
+import UploadHandler from "./uploadHandler.js";
+import { logger } from "./logger.js"
+import FileHelper from "./fileHelper.js"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const defaultDownloadsFolder = resolve(__dirname, '../', "downloads")
@@ -22,15 +25,38 @@ export default class Routes {
   async defaultRoute(request, response) {
     response.end('Hello Word!')
   }
-  
+
   async options(request, response) {
     response.writeHead(204)
     response.end('Hello Word!')
   }
 
   async post(request, response) {
-    logger.info('post')
-    response.end()
+    const { headers } = request
+    const { query: { socketId } } = parse(request.url, true)
+    const uploadHandler = new UploadHandler({
+      socketId,
+      io: this.io,
+      downloadsFolder: this.downloadFolder
+    })
+
+    const onFinish = (response) => () => {
+      response.writeHead(200)
+      const data = JSON.stringify({ result: 'Files uploaded with success!'})
+      response.end(data)
+    }
+
+    const busboyInstance = uploadHandler.registerEvents(
+      headers,
+      onFinish(response)
+    )
+
+    await pipeline(
+      request,
+      busboyInstance,
+    )
+
+    logger.info('Request finished with success!')
   }
 
   async get(request, response) {

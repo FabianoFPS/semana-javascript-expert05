@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "_prestart",
+			"problemMatcher": [],
+			"label": "npm: _prestart",
+			"detail": " . ../../../untracked_files/environments.sh"
+		}
+	]
+}
